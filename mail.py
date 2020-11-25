@@ -42,6 +42,20 @@ def get_email(from_):
     return email
 
 
+def retry(_function):
+    def wrapped_function(*args, **kwargs):
+        for _ in range(3):
+            try:
+                return _function(*args, **kwargs)
+                break
+            except BaseException as e:
+                print(str(e))
+                continue
+
+    return wrapped_function
+
+
+@retry
 def main():
     mailparser = HeaderParser()
 
